@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form"
 import Error from './Error';
+import { DraftPatient } from "../types";
+import { usePatientStore } from "../store";
 type Props = {}
 
 export default function PatientsForm({}: Props) {
-    const {register,handleSubmit,formState:{errors}}=useForm()
-    const registerPatient = ()=>{
-        console.log('nuevo paciente');
+    const addPatient = usePatientStore(state=>state.addPatient)
+    const {register,handleSubmit,formState:{errors}}=useForm<DraftPatient>()
+    const registerPatient = (data:DraftPatient)=>{
+        addPatient(data);
         
     }
     return (
@@ -36,7 +39,7 @@ export default function PatientsForm({}: Props) {
                     })}
                 />
                 {errors.name&&(
-                    <Error>{errors.name?.message?.toString()}</Error>
+                    <Error>{errors.name?.message}</Error>
                 )}
                 
                 
@@ -56,7 +59,7 @@ export default function PatientsForm({}: Props) {
                 })}
             />
             {errors.caretaker&&(
-                    <Error>{errors.caretaker?.message?.toString()}</Error>
+                    <Error>{errors.caretaker?.message}</Error>
                 )}
             </div>
 
@@ -78,7 +81,7 @@ export default function PatientsForm({}: Props) {
                 })} 
             />
             {errors.email&&(
-                    <Error>{errors.email?.message?.toString()}</Error>
+                    <Error>{errors.email?.message}</Error>
                 )}
             </div>
 
